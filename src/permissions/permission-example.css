@@ -23,3 +23,33 @@
 mat-form-field {
   width: 400px;
 }
+table {
+  width: 100%;
+  margin-top: 32px;
+  padding: 16px;
+  background-color: #fff;
+}
+th {
+  text-align: left;
+  font-size: 16px;
+}
+thead th {
+  /* padding-top: 32px;   */
+  padding-bottom: 16px;  
+  font-size: 20px;
+}
+tbody th {
+  vertical-align: text-top;
+  font-weight: 500;
+  width: 18%;
+}
+table td {
+  vertical-align: text-top;
+  width: 20%;
+}
+table td ul {
+  list-style: none;
+}
+table td.gutter { 
+  width: 2%;
+}

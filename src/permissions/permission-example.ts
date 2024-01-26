@@ -13,6 +13,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 
+import {MatTableModule} from '@angular/material/table';
+
 export interface ogPermission {
   id: string;
   name: string;
@@ -67,6 +69,7 @@ export interface Permission {
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatTableModule,
     FormsModule,
     ReactiveFormsModule,
   ],
