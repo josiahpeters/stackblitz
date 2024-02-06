@@ -9,7 +9,7 @@
 <mat-card *ngIf="layout.value === 'expansion'">
   <mat-card-header>
     <mat-card-title>Expansion Panels with Grouping</mat-card-title>
-    <!-- <mat-card-subtitle>Start</mat-card-subtitle> -->
+    <!-- <mat-card-subtitle></mat-card-subtitle> -->
   </mat-card-header>
 
   <mat-card-actions>
@@ -25,7 +25,7 @@
         <!-- #enddocregion hide-toggle -->
         <mat-expansion-panel-header>
           <mat-panel-title> {{ module.name }} </mat-panel-title>
-          <mat-panel-description> </mat-panel-description>
+          <mat-panel-description>{{ getModuleCount(module) }} Permissions Enabled</mat-panel-description>
         </mat-expansion-panel-header>
         @for (group of module.groups; track $index) {
         <p>
@@ -37,7 +37,7 @@
           @for (permission of group.permissions; track $index) {
           @if(permission.deprecated) {
           <li>
-            <mat-checkbox
+            <mat-checkbox [(ngModel)]="permission.enabled"
               ><span style="text-decoration: line-through"
                 >{{ permission.name }}</span
               >
@@ -57,14 +57,14 @@
           </li>
           } @else if (permission.new) {
           <li>
-            <mat-checkbox>{{ permission.name }}</mat-checkbox>
+            <mat-checkbox [(ngModel)]="permission.enabled">{{ permission.name }}</mat-checkbox>
             <mat-icon color="primary" [matTooltip]="permission.tooltip||''"
               >new_releases</mat-icon
             >
           </li>
           } @else {
           <li>
-            <mat-checkbox>{{ permission.name }}</mat-checkbox>
+            <mat-checkbox [(ngModel)]="permission.enabled">{{ permission.name }}</mat-checkbox>
           </li>
           } }
         </ul>
@@ -142,7 +142,8 @@
   <!-- </mat-card-content>
 </mat-card> -->
 </div>
-<table mat-table [dataSource]="[]" class="mat-elevation-z8" *ngif="!layout">
+<div  *ngIf="!layout">
+<table mat-table [dataSource]="[]" class="mat-elevation-z8">
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
@@ -173,3 +174,4 @@
   <tr mat-header-row *matHeaderRowDef="[]"></tr>
   <tr mat-row *matRowDef="let row; columns: [];"></tr>
 </table>
+</div>

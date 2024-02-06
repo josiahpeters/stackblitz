@@ -1,19 +1,19 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import {NgFor, NgIf} from '@angular/common';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NgFor, NgIf } from "@angular/common";
+import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { MatAccordion, MatExpansionModule } from "@angular/material/expansion";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
 
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from "@angular/material/table";
 
 export interface ogPermission {
   id: string;
@@ -46,6 +46,7 @@ export interface Permission {
   deprecated: boolean;
   new: boolean;
   tooltip?: string;
+  enabled: boolean;
 }
 
 /**
@@ -58,7 +59,7 @@ export interface Permission {
   standalone: true,
   imports: [
     NgIf,
-    
+
     MatExpansionModule,
     MatCheckboxModule,
     MatChipsModule,
@@ -75,7 +76,7 @@ export interface Permission {
   ],
 })
 export class PermissionExample implements OnInit {
-  layout = new FormControl('');
+  layout = new FormControl("");
   panelOpenState = false;
 
   modules = new Array<Module>();
@@ -83,7 +84,8 @@ export class PermissionExample implements OnInit {
   modulesByName = new Map<string, Module>();
   groupsByName = new Map<string, Group>();
 
-  @ViewChild(MatAccordion) accordion: MatAccordion;
+  @ViewChild(MatAccordion)
+  accordion: MatAccordion;
 
   constructor() {
   }
@@ -93,6 +95,20 @@ export class PermissionExample implements OnInit {
     this.mapPermissions();
 
     console.log(this.modules);
+  }
+
+  getModuleCount(module: Module): number {
+    let permissionCount = 0;
+
+    for (let group of module.groups) {
+      for (let permission of group.permissions) {
+        if (permission.enabled) {
+          permissionCount++;
+        }
+      }
+    }
+
+    return permissionCount;
   }
 
   mapPermissions() {
@@ -112,10 +128,15 @@ export class PermissionExample implements OnInit {
             new: permission.new,
             tooltip: permission.tooltip,
             oldName: permission.name,
+            enabled: false,
           });
         }
       }
     }
+  }
+
+  log(event: any) {
+    console.log(event);
   }
 
   mapModulesAndGroups() {
@@ -160,7 +181,7 @@ export class PermissionExample implements OnInit {
       newName: "SEND PUBLIC ALERT",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "PublicAlert",
       module: "Alerting",
       groupSort: 2,
@@ -171,7 +192,7 @@ export class PermissionExample implements OnInit {
       newName: "Internal Public Alert History",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "PublicAlert",
       module: "Alerting",
       groupSort: 4,
@@ -182,7 +203,7 @@ export class PermissionExample implements OnInit {
       newName: "Public Subscriber Alert History",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "PublicAlert",
       module: "Alerting",
       groupSort: 6,
@@ -193,7 +214,7 @@ export class PermissionExample implements OnInit {
       newName: "Public Signups",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "PublicAlert",
       module: "Alerting",
       groupSort: 8,
@@ -204,7 +225,7 @@ export class PermissionExample implements OnInit {
       newName: "File-Image Upload",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "FileManagement",
       module: "FileManagement",
       groupSort: 2,
@@ -215,7 +236,7 @@ export class PermissionExample implements OnInit {
       newName: "Files",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "FileManagement",
       module: "FileManagement",
       groupSort: 3,
@@ -226,7 +247,7 @@ export class PermissionExample implements OnInit {
       newName: "Images",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "FileManagement",
       module: "FileManagement",
       groupSort: 4,
@@ -237,7 +258,7 @@ export class PermissionExample implements OnInit {
       newName: "Administrator Passwords",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Administration",
       module: "Administration",
       groupSort: 2,
@@ -248,7 +269,7 @@ export class PermissionExample implements OnInit {
       newName: "Options-Settings",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Administration",
       module: "Administration",
       groupSort: 4,
@@ -259,7 +280,7 @@ export class PermissionExample implements OnInit {
       newName: "Pronunciation",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Administration",
       module: "Administration",
       groupSort: 6,
@@ -270,7 +291,7 @@ export class PermissionExample implements OnInit {
       newName: "Current Admin Logins",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Administration",
       module: "Administration",
       groupSort: 14,
@@ -281,7 +302,7 @@ export class PermissionExample implements OnInit {
       newName: "Usage Report",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Administration",
       module: "Administration",
       groupSort: 18,
@@ -292,7 +313,8 @@ export class PermissionExample implements OnInit {
       newName: "Manage Internal Contacts",
       deprecated: false,
       new: true,
-      tooltip: 'Creating, Editing, and Deleting of Internal Contacts are now controlled by the Manage Internal Contacts Permission',
+      tooltip:
+        "Creating, Editing, and Deleting of Internal Contacts are now controlled by the Manage Internal Contacts Permission",
       permissionGroup: "InternalContacts",
       module: "Contact Management",
       groupSort: 2,
@@ -303,7 +325,8 @@ export class PermissionExample implements OnInit {
       newName: "EDIT Internal Members Allowed",
       deprecated: true,
       new: false,
-      tooltip: 'This permission has been deprecated in favor of Manage Internal Contacts which controls the ability to edit Internal Contacts',
+      tooltip:
+        "This permission has been deprecated in favor of Manage Internal Contacts which controls the ability to edit Internal Contacts",
       permissionGroup: "InternalContacts",
       module: "Contact Management",
       groupSort: 4,
@@ -314,7 +337,7 @@ export class PermissionExample implements OnInit {
       newName: "View Internal Contacts",
       deprecated: false,
       new: true,
-      tooltip: 'Allows the viewing of Internal Contacts from other modules.',
+      tooltip: "Allows the viewing of Internal Contacts from other modules.",
       permissionGroup: "InternalContacts",
       module: "Contact Management",
       groupSort: 6,
@@ -325,7 +348,7 @@ export class PermissionExample implements OnInit {
       newName: "Profile Update Reminder",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Utilities",
       module: "Contact Management",
       groupSort: 7,
@@ -336,7 +359,8 @@ export class PermissionExample implements OnInit {
       newName: "Internal Groups",
       deprecated: false,
       new: true,
-      tooltip: 'Creating, Editing, and Deleting of Internal Groups are now controlled by the Manage Internal Groups Permission',
+      tooltip:
+        "Creating, Editing, and Deleting of Internal Groups are now controlled by the Manage Internal Groups Permission",
       permissionGroup: "InternalContacts",
       module: "Contact Management",
       groupSort: 3,
@@ -347,7 +371,7 @@ export class PermissionExample implements OnInit {
       newName: "SEND ETN ALERT",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "EtnAlert",
       module: "Alerting",
       groupSort: 2,
@@ -358,7 +382,7 @@ export class PermissionExample implements OnInit {
       newName: "ETN Alert History",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "EtnAlert",
       module: "Alerting",
       groupSort: 4,
@@ -369,7 +393,7 @@ export class PermissionExample implements OnInit {
       newName: "Allow Callout to Public Signups",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "EtnAlert",
       module: "Alerting",
       groupSort: 6,
@@ -380,7 +404,7 @@ export class PermissionExample implements OnInit {
       newName: "Export Alert History",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "AlertHistory",
       module: "Alerting",
       groupSort: 0,
@@ -391,7 +415,7 @@ export class PermissionExample implements OnInit {
       newName: "Mini Console History Button",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "AlertHistory",
       module: "Alerting",
       groupSort: 2,
@@ -402,7 +426,7 @@ export class PermissionExample implements OnInit {
       newName: "Voice Channel (Text-to-Speech)",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "DeliveryChannels",
       module: "Alerting",
       groupSort: 10,
@@ -413,7 +437,7 @@ export class PermissionExample implements OnInit {
       newName: "Faxing Channel",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "DeliveryChannels",
       module: "Alerting",
       groupSort: 12,
@@ -424,7 +448,7 @@ export class PermissionExample implements OnInit {
       newName: "Modify Authorization Codes",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Administration",
       module: "Administration",
       groupSort: 26,
@@ -435,7 +459,7 @@ export class PermissionExample implements OnInit {
       newName: "Email Confirmation",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "DeliveryChannels",
       module: "Alerting",
       groupSort: 2,
@@ -446,7 +470,8 @@ export class PermissionExample implements OnInit {
       newName: "INTERNAL ALERT",
       deprecated: true,
       new: true,
-      tooltip: 'This permission will be deprecated on 3/12/2024. It will be replaced with a new Send Alert permission.',
+      tooltip:
+        "This permission will be deprecated on 3/12/2024. It will be replaced with a new Send Alert permission.",
       permissionGroup: "QuickAlert",
       module: "Alerting",
       groupSort: 1,
@@ -457,7 +482,7 @@ export class PermissionExample implements OnInit {
       newName: "Internal Alert History",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "QuickAlert",
       module: "Alerting",
       groupSort: 2,
@@ -468,7 +493,7 @@ export class PermissionExample implements OnInit {
       newName: "Scheduled Alerts",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "QuickAlert",
       module: "Alerting",
       groupSort: 10,
@@ -479,7 +504,7 @@ export class PermissionExample implements OnInit {
       newName: "Survey / Polling",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "QuickAlert",
       module: "Alerting",
       groupSort: 12,
@@ -490,7 +515,7 @@ export class PermissionExample implements OnInit {
       newName: "Priority",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "QuickAlert",
       module: "Alerting",
       groupSort: 15,
@@ -501,7 +526,7 @@ export class PermissionExample implements OnInit {
       newName: "SEND SOCIAL MEDIA",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "SocialMedia",
       module: "Social Media",
       groupSort: 1,
@@ -512,7 +537,7 @@ export class PermissionExample implements OnInit {
       newName: "Social Media History",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "SocialMedia",
       module: "Social Media",
       groupSort: 2,
@@ -523,7 +548,7 @@ export class PermissionExample implements OnInit {
       newName: "Social Media Accounts",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Administration",
       module: "Social Media",
       groupSort: 7,
@@ -534,7 +559,7 @@ export class PermissionExample implements OnInit {
       newName: "Mobile App Channel",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "DeliveryChannels",
       module: "Alerting",
       groupSort: 0,
@@ -545,7 +570,7 @@ export class PermissionExample implements OnInit {
       newName: "Workflow Polling",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "QuickAlert",
       module: "Alerting",
       groupSort: 11,
@@ -556,7 +581,7 @@ export class PermissionExample implements OnInit {
       newName: "SMS Priority",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "DeliveryChannels",
       module: "Alerting",
       groupSort: 6,
@@ -567,7 +592,7 @@ export class PermissionExample implements OnInit {
       newName: "SMS Polling",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "DeliveryChannels",
       module: "Alerting",
       groupSort: 7,
@@ -578,7 +603,7 @@ export class PermissionExample implements OnInit {
       newName: "ESRI Map",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "QuickAlert",
       module: "Alerting",
       groupSort: 21,
@@ -589,7 +614,7 @@ export class PermissionExample implements OnInit {
       newName: "Role Management",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Administration",
       module: "Administration",
       groupSort: 19,
@@ -600,7 +625,7 @@ export class PermissionExample implements OnInit {
       newName: "Can watch tasklists",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Tasklists",
       module: "Tasklists",
       groupSort: 2,
@@ -611,7 +636,7 @@ export class PermissionExample implements OnInit {
       newName: "Can be assigned tasklists",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Tasklists",
       module: "Tasklists",
       groupSort: 1,
@@ -622,7 +647,7 @@ export class PermissionExample implements OnInit {
       newName: "Initiate chats",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Chat",
       module: "Chat",
       groupSort: 1,
@@ -633,7 +658,7 @@ export class PermissionExample implements OnInit {
       newName: "Manage templates",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Tasklists",
       module: "Tasklists",
       groupSort: 4,
@@ -644,7 +669,7 @@ export class PermissionExample implements OnInit {
       newName: "Activate templates",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Tasklists",
       module: "Tasklists",
       groupSort: 5,
@@ -655,7 +680,7 @@ export class PermissionExample implements OnInit {
       newName: "Incident Management",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Administration",
       module: "Administration",
       groupSort: 21,
@@ -666,7 +691,7 @@ export class PermissionExample implements OnInit {
       newName: "Create activated tasklists",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Tasklists",
       module: "Tasklists",
       groupSort: 6,
@@ -677,7 +702,7 @@ export class PermissionExample implements OnInit {
       newName: "Can manage tasklists",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Tasklists",
       module: "Tasklists",
       groupSort: 3,
@@ -688,7 +713,7 @@ export class PermissionExample implements OnInit {
       newName: "Monitor all tasklists",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Tasklists",
       module: "Tasklists",
       groupSort: 7,
@@ -699,7 +724,7 @@ export class PermissionExample implements OnInit {
       newName: "Mobile Beacon User",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "MobileBeacon",
       module: "Alerting",
       groupSort: 1,
@@ -710,7 +735,7 @@ export class PermissionExample implements OnInit {
       newName: "Manage Channel Defaults",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Settings",
       module: "Alerting",
       groupSort: 1,
@@ -721,7 +746,7 @@ export class PermissionExample implements OnInit {
       newName: "Manage Custom Alert Forms",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Settings",
       module: "Alerting",
       groupSort: 2,
@@ -732,7 +757,7 @@ export class PermissionExample implements OnInit {
       newName: "Access New WebUI",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "InternalUseOnly",
       module: "InternalUseOnly",
       groupSort: 4,
@@ -743,7 +768,7 @@ export class PermissionExample implements OnInit {
       newName: "Manage Alert Templates",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Templates",
       module: "Alerting",
       groupSort: 3,
@@ -754,7 +779,7 @@ export class PermissionExample implements OnInit {
       newName: "Email Channel",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "DeliveryChannels",
       module: "Alerting",
       groupSort: 1,
@@ -765,7 +790,7 @@ export class PermissionExample implements OnInit {
       newName: "Text Message Channel",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "DeliveryChannels",
       module: "Alerting",
       groupSort: 5,
@@ -776,7 +801,7 @@ export class PermissionExample implements OnInit {
       newName: "Custom menu for web interface",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "InternalUseOnly",
       module: "InternalUseOnly",
       groupSort: 9,
@@ -787,7 +812,7 @@ export class PermissionExample implements OnInit {
       newName: "Manage Keywords",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Keywords",
       module: "Keywords",
       groupSort: 1,
@@ -798,7 +823,7 @@ export class PermissionExample implements OnInit {
       newName: "Manage Integrations",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Integrations",
       module: "Integrations",
       groupSort: 1,
@@ -809,7 +834,7 @@ export class PermissionExample implements OnInit {
       newName: "Manage Branding",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Branding",
       module: "Branding",
       groupSort: 1,
@@ -820,7 +845,7 @@ export class PermissionExample implements OnInit {
       newName: "Can modify task lists on activation",
       deprecated: false,
       new: false,
-      tooltip: '',
+      tooltip: "",
       permissionGroup: "Tasklists",
       module: "Tasklists",
       groupSort: 10,
