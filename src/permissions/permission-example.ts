@@ -111,6 +111,18 @@ export class PermissionExample implements OnInit {
     return permissionCount;
   }
 
+  getModuleTotalCount(module: Module): number {
+    let permissionCount = 0;
+
+    for (let group of module.groups) {
+      for (let permission of group.permissions) {
+          permissionCount++;
+      }
+    }
+
+    return permissionCount;
+  }
+
   mapPermissions() {
     for (let permission of this.newPermissions) {
       // map modules

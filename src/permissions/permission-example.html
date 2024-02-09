@@ -25,7 +25,7 @@
         <!-- #enddocregion hide-toggle -->
         <mat-expansion-panel-header>
           <mat-panel-title> {{ module.name }} </mat-panel-title>
-          <mat-panel-description>{{ getModuleCount(module) }} Permissions Enabled</mat-panel-description>
+          <mat-panel-description>{{ getModuleCount(module) }} of {{ getModuleTotalCount(module) }} Permissions Enabled</mat-panel-description>
         </mat-expansion-panel-header>
         @for (group of module.groups; track $index) {
         <p>
